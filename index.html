@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <link rel="stylesheet" href="style.css">
+
+    <script src="https://kit.fontawesome.com/ff5ae8fa61.js" crossorigin="anonymous"></script>
+    <script src="app.js" defer></script>
+
+    <title>Music Library</title>
+</head>
+<body>
+
+    <div class="sidebar">
+
+    </div>
+
+    <div class="container">
+        <header>
+            <h1>Music Library</h1>
+        </header>
+
+        <form id="song-form">
+            <div class="title-container">
+                <label for="title">Title</label>
+                <input type="text" id="title">
+            </div>
+            <div class="artist-container">
+                <label for="artist">Artist</label>
+                <input type="text" id="artist">
+            </div>
+            <div class="length-container">
+                <label for="length">Length</label>
+                <input type="text" id="length">
+            </div>
+            <button type="button" id="submit">ADD SONG</button>
+        </form>
+        
+        <div class="table-container">
+            <div class="table table-heading">
+                <div>Song Title</div>
+                <div>Aritst</div>
+                <div>Length</div>
+                <div>Listened?</div>
+                <div>Delete</div>
+            </div>
+
+            <div class="table song-card">
+                <div>My Favorite Song</div>
+                <div>John Doe</div>
+                <div>5 minutes</div>
+                <input type="checkbox">
+                <i class="btn-delete fas fa-trash"></i>
+            </div>
+           
+            </div>
+        </div>
+    </div>
+    
+</body>
+</html>

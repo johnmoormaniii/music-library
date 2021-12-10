@@ -1,0 +1,51 @@
+*, *::before, *::after{
+    box-sizing: border-box;
+}
+
+:root{
+    --sidebar-width: 100px;
+}
+
+body, html{
+    margin: 0;
+    padding: 0;
+}
+
+.container{
+    position: relative;
+    margin: 0;
+    padding: 0;
+    margin-left: var(--sidebar-width);
+}
+
+.sidebar{
+    position: fixed;
+    background-color: lightblue;
+    height: 100vh;
+    width: var(--sidebar-width);
+    margin: 0;
+    padding: 0;
+    left: 0;
+    top: 0;
+}
+
+.table{
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    text-align: left;
+}
+
+.table-heading{
+    margin-bottom: 10px;
+}
+
+.song-card{
+    background-color: lightgray;
+    border: 2px solid black;
+    margin: 5px;
+    padding: 5px;
+}
+
+.btn-delete{
+    cursor: pointer;
+}
