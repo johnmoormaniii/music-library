@@ -25,7 +25,7 @@ function addSongToDisplay(){
         songCard.classList.add('table');
         songCard.classList.add('song-card');
         songCard.innerHTML = `
-            <div>${song.title}</div>
+            <div class="song-title">${song.title}</div>
             <div>${song.artist}</div>
             <div>${song.length}</div>
             <input type="checkbox">
@@ -44,6 +44,8 @@ function addSongToDisplay(){
         
         songLibrary.push(song);
         console.log(songLibrary);
+        const songIndex = songLibrary.indexOf(song);
+        songCard.setAttribute('id', `${songIndex}`);
     };
 };
 
@@ -53,14 +55,11 @@ function removeSongFromDisplay(button){
     };
 };
 
-function removeSongFromArray(title){
-
+function removeSongFromArray(song){
     songLibrary.forEach((song) => {
-        if (song.title = title) {
-            
-        }
-    })
-}
+        
+    });
+};
 
 // Events
 
@@ -68,11 +67,11 @@ function removeSongFromArray(title){
 
 document.querySelector('#submit').addEventListener('click', () => {
     addSongToDisplay();
-})
+});
 
 // Removing a Song
 
 document.addEventListener('click', (e) => {
+    removeSongFromArray(e.target);
     removeSongFromDisplay(e.target);
-    console.log(e.target.parentElement);
-})
+});
