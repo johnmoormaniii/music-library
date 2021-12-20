@@ -1,7 +1,5 @@
 // ********** app.js **********
 
-let songLibrary = [];
-
 class Song {
     constructor(title, artist, length){
         this.title = title;
@@ -10,16 +8,11 @@ class Song {
     }
 }
 
-function addSongToDisplay(){
-    const title = document.querySelector('#title').value;
-    const artist = document.querySelector('#artist').value;
-    const length = document.querySelector('#length').value;
+let songLibrary =[];
 
-    if (title === '' || artist === '' || length === ''){
-        alert('Please Fill Out All Fields');
-    } else {
-        const song = new Song(title, artist, length);
-
+function displaySongs(){
+    const songs = JSON.parse(localStorage.getItem('songLibrary'));
+    songs.forEach((song) => {
         const tableContainer = document.querySelector('.table-container');
         const songCard = document.createElement('div');
         songCard.classList.add('table');
@@ -32,46 +25,118 @@ function addSongToDisplay(){
             <i class="btn-delete fas fa-trash">
         `;
 
-        const titleContainer = document.querySelector('.title-container');
-        const artistContainer = document.querySelector('.artist-container');
-        const lengthContainer = document.querySelector('.length-container');
-
-        document.querySelector('#title').value = '';
-        document.querySelector('#artist').value = '';
-        document.querySelector('#length').value = '';
-
         tableContainer.appendChild(songCard);
-        
-        songLibrary.push(song);
-        console.log(songLibrary);
-        const songIndex = songLibrary.indexOf(song);
-        songCard.setAttribute('id', `${songIndex}`);
+    })
+}
+
+function addSong(){
+    
+    const title = document.querySelector('#title').value;
+    const artist = document.querySelector('#artist').value;
+    const length = document.querySelector('#length').value;
+
+    if (title === '' || artist === '' || length === ''){
+        alert('Make Sure All Fields Are Filled Out!')
+    } else {
+        const newSong = new Song(title, artist, length);
+        const songs = JSON.parse(localStorage.getItem('songLibrary'));
+        songs.push(newSong);
+        console.log(songs);
+        localStorage.setItem('songLibrary', JSON.stringify(songs));
+
+        addSongToDisplay(newSong);
     };
+};
+
+function removeSong(element){
+    if (element.classList.contains('btn-delete')){
+        const songs = JSON.parse(localStorage.getItem('songLibrary'));
+        songBeingDeleted = element.parentElement.firstChild.nextElementSibling.textContent;
+
+        songs.forEach((song, index) => {
+            if(song.title === songBeingDeleted){
+                songs.splice(index, 1);
+                console.log(songs);
+                localStorage.setItem('songLibrary', JSON.stringify(songs));
+            }
+        })
+
+    }
+};
+
+function addSongToDisplay(newSong){
+    const tableContainer = document.querySelector('.table-container');
+    const songCard = document.createElement('div');
+    songCard.classList.add('table');
+    songCard.classList.add('song-card');
+    songCard.innerHTML = `
+        <div class="song-title">${newSong.title}</div>
+        <div>${newSong.artist}</div>
+        <div>${newSong.length}</div>
+        <input type="checkbox">
+        <i class="btn-delete fas fa-trash">
+    `;
+
+    tableContainer.appendChild(songCard);
 };
 
 function removeSongFromDisplay(button){
-    if(button.classList.contains("btn-delete")){
+    if(button.classList.contains('btn-delete')){
         button.parentElement.remove();
+    }
+};
+
+function clearInput(){
+    document.querySelector('#title').value = '';
+    document.querySelector('#artist').value = '';
+    document.querySelector('#length').value = '';
+};
+
+
+// ---------- LOCAL STORAGE HANDLING ----------
+
+
+function getLocalStorage(){
+    if (JSON.parse(localStorage.getItem('songLibrary')) == null) {
+        newLocalStorage();
+    } else {
+        console.log(JSON.parse(localStorage.getItem('songLibrary')));
     };
+}
+
+function clearAllLocalStorage(){
+    localStorage.clear();
+    songLibrary = [];
+    localStorage.setItem('songLibrary', JSON.stringify(songLibrary));
 };
 
-function removeSongFromArray(song){
-    songLibrary.forEach((song) => {
-        
-    });
+function newLocalStorage(){
+    let songLibrary = [];
+    localStorage.setItem('songLibrary', JSON.stringify(songLibrary));
+    console.log(JSON.parse(localStorage.getItem('songLibrary')));
 };
 
-// Events
 
-// Adding a Song
+// ---------- EVENTS ----------
+
 
 document.querySelector('#submit').addEventListener('click', () => {
-    addSongToDisplay();
+    addSong();
+    clearInput();
 });
-
-// Removing a Song
 
 document.addEventListener('click', (e) => {
-    removeSongFromArray(e.target);
+    removeSong(e.target);
     removeSongFromDisplay(e.target);
 });
+
+document.querySelector('#clearAll').addEventListener('click', () => {
+    clearAllLocalStorage();
+    newLocalStorage();
+    clearAllCards();
+})
+
+// ---------- THESE RUN WHEN THE PAGE OPENS ----------
+
+getLocalStorage();
+displaySongs();
