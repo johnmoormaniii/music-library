@@ -1,5 +1,6 @@
 // ********** app.js **********
 
+
 class Song {
     constructor(title, artist, length){
         this.title = title;
@@ -10,27 +11,11 @@ class Song {
 
 let songLibrary =[];
 
-function displaySongs(){
-    const songs = JSON.parse(localStorage.getItem('songLibrary'));
-    songs.forEach((song) => {
-        const tableContainer = document.querySelector('.table-container');
-        const songCard = document.createElement('div');
-        songCard.classList.add('table');
-        songCard.classList.add('song-card');
-        songCard.innerHTML = `
-            <div class="song-title">${song.title}</div>
-            <div>${song.artist}</div>
-            <div>${song.length}</div>
-            <input type="checkbox">
-            <i class="btn-delete fas fa-trash">
-        `;
 
-        tableContainer.appendChild(songCard);
-    })
-}
+// ---------- HANDLING THE SONG LIBRARY ARRAY ----------
 
-function addSong(){
-    
+
+function addSong(){   
     const title = document.querySelector('#title').value;
     const artist = document.querySelector('#artist').value;
     const length = document.querySelector('#length').value;
@@ -64,8 +49,33 @@ function removeSong(element){
     }
 };
 
+
+// ---------- SONG DISPLAY HANDLING ----------
+
+
+function displaySongs(){
+    const songs = JSON.parse(localStorage.getItem('songLibrary'));
+    songs.forEach((song) => {
+        const tableContainer = document.querySelector('.table-container');
+        const songCardContainer = document.querySelector('.song-card-container');
+        const songCard = document.createElement('div');
+        songCard.classList.add('table');
+        songCard.classList.add('song-card');
+        songCard.innerHTML = `
+            <div class="song-title">${song.title}</div>
+            <div>${song.artist}</div>
+            <div>${song.length}</div>
+            <input type="checkbox">
+            <i class="btn-delete fas fa-trash">
+        `;
+
+        songCardContainer.appendChild(songCard);
+    })
+};
+
 function addSongToDisplay(newSong){
     const tableContainer = document.querySelector('.table-container');
+    const songCardContainer = document.querySelector('.song-card-container');
     const songCard = document.createElement('div');
     songCard.classList.add('table');
     songCard.classList.add('song-card');
@@ -77,7 +87,7 @@ function addSongToDisplay(newSong){
         <i class="btn-delete fas fa-trash">
     `;
 
-    tableContainer.appendChild(songCard);
+    songCardContainer.appendChild(songCard);
 };
 
 function removeSongFromDisplay(button){
@@ -85,6 +95,18 @@ function removeSongFromDisplay(button){
         button.parentElement.remove();
     }
 };
+
+function clearAllCards(button){
+    button.parentElement.parentElement.nextElementSibling.firstChild.nextElementSibling.nextElementSibling.remove();
+    const tableContainer = document.querySelector('.table-container');
+    const newSongCardContainer = document.createElement('div');
+    newSongCardContainer.classList.add('song-card-container');
+    tableContainer.appendChild(newSongCardContainer);
+};
+
+
+// ---------- CLEARING INPUT FIELDS AFTER ADDING A SONG ----------
+
 
 function clearInput(){
     document.querySelector('#title').value = '';
@@ -130,13 +152,15 @@ document.addEventListener('click', (e) => {
     removeSongFromDisplay(e.target);
 });
 
-document.querySelector('#clearAll').addEventListener('click', () => {
+document.querySelector('#clearAll').addEventListener('click', (e) => {
     clearAllLocalStorage();
     newLocalStorage();
-    clearAllCards();
-})
+    clearAllCards(e.target);
+});
+
 
 // ---------- THESE RUN WHEN THE PAGE OPENS ----------
+
 
 getLocalStorage();
 displaySongs();
